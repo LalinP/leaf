@@ -5,7 +5,6 @@ import java.util.UUID;
 import com.leaf.customer.onboarding.onboardingservice.auth.repo.UserRepo;
 import com.leaf.customer.onboarding.onboardingservice.exception.EntityNotFoundException;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
