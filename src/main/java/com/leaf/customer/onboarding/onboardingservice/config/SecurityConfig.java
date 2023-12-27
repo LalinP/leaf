@@ -38,7 +38,7 @@ public class SecurityConfig {
           .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
           .authorizeHttpRequests(auth -> auth
               .requestMatchers(HttpMethod.POST, "/api/v1/auth/signup/**").permitAll()
-              .requestMatchers(HttpMethod.POST, "/api/v1/auth/otp/**").permitAll()
+              .requestMatchers(HttpMethod.POST, "/api/v1/auth/otp:send").permitAll()
               .requestMatchers(HttpMethod.POST, "/api/v1/auth/login/**").permitAll()
               .anyRequest().authenticated())
           .authenticationManager(authenticationManager).build();
