@@ -2,7 +2,7 @@ CREATE SCHEMA IF NOT EXISTS leaf;
 
 CREATE TABLE IF NOT EXISTS leaf.leaf_user
 (
-    userId                            UUID NOT NULL,
+    userId                            UUID NOT NULL DEFAULT  gen_random_uuid(),
     country_code                      VARCHAR(255),
     mobile_number                     VARCHAR(255),
     passcode                          VARCHAR(6),

@@ -30,7 +30,6 @@ public class AuthOtp {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
-
   private String requestId;
   private UUID userAccountId;
   private String otp;

@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OtpRepo extends JpaRepository<AuthOtp, UUID> {
-
+  AuthOtp findByRequestId(String requestId);
 }

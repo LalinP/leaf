@@ -20,15 +20,16 @@ public class JwtHelper {
   private static final Key SECRET_KEY =  Keys.secretKeyFor(SignatureAlgorithm.HS256);
   private static final int DURATION_MINUTES = 30;
 
-  public static String generateJwt(String userId, String permission) {
+  public  String generateJwt(String userId, String permission, int expMinutes, ChronoUnit units) {
    return Jwts.builder()
         .subject(userId)
         .id(UUID.randomUUID().toString())
         .issuedAt(Date.from(Instant.now()))
-        .expiration(Date.from(Instant.now().plus(DURATION_MINUTES, ChronoUnit.MINUTES)))
+        .expiration(Date.from(Instant.now().plus(expMinutes, units)))
         .claim("permission",permission)
         .claim("organisation", "Leaf")
         .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+
         .compact();
   }
 
