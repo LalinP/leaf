@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import static org.springframework.http.HttpStatus.FORBIDDEN;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @ControllerAdvice
 public class LeafExceptionHandler {
@@ -19,6 +20,6 @@ public class LeafExceptionHandler {
 
   @ExceptionHandler(OtpValidationException.class)
   public ResponseEntity<ApiErrorResponse> handleOtpValidationException(OtpValidationException exception) {
-    return ResponseEntity.status(FORBIDDEN).body((new ApiErrorResponse(FORBIDDEN.value(), exception.getMessage())));
+    return ResponseEntity.status(UNAUTHORIZED).body((new ApiErrorResponse(UNAUTHORIZED.value(), exception.getMessage())));
   }
 }

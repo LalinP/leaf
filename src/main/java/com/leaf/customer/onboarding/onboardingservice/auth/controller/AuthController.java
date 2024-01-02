@@ -4,6 +4,9 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
 import com.leaf.customer.onboarding.onboardingservice.auth.controller.dto.ApiErrorResponse;
+import com.leaf.customer.onboarding.onboardingservice.auth.model.auth.RegisterRequestDto;
+import com.leaf.customer.onboarding.onboardingservice.auth.model.auth.RegisterResponseDto;
+import com.leaf.customer.onboarding.onboardingservice.auth.model.auth.UserService;
 import com.leaf.customer.onboarding.onboardingservice.auth.model.auth.ValidateOtpRequestDto;
 import com.leaf.customer.onboarding.onboardingservice.auth.model.auth.ValidateOtpResponseDto;
 import com.leaf.customer.onboarding.onboardingservice.auth.model.auth.OtpRequestDto;
@@ -32,6 +35,7 @@ public class AuthController {
 
 private final JwtHelper jwtHelper;
 private final OtpManager otpManager;
+private final UserService userService;
 
   @Operation(summary = "Send OTP to User")
   @ApiResponse(responseCode = "201")
@@ -43,7 +47,7 @@ private final OtpManager otpManager;
     var number = otpRequestDto.getPhoneNumber();
     OtpResponseDto otp;
     try {
-      otp = otpManager.generateNewOtp();
+      otp = otpManager.generateNewOtp(otpRequestDto);
       log.debug("OTP {}", otp.Otp());
     } catch (NoSuchAlgorithmException e) {
       throw new RuntimeException(e);
@@ -54,25 +58,25 @@ private final OtpManager otpManager;
   }
 
   @Operation(summary = "Validate the OTP")
-  @ApiResponse(responseCode = "202")
+  @ApiResponse(responseCode = "302")
+  @ApiResponse(responseCode = "401", content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
   @ApiResponse(responseCode = "403", content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
   @ApiResponse(responseCode = "409", content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
   @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
-  @PostMapping("/login")
+  @PostMapping("/otp/validate")
   public ResponseEntity<ValidateOtpResponseDto> validateOtp(@Valid @RequestBody ValidateOtpRequestDto validateOtpRequestDto) {
   var response = otpManager.validateOtp(validateOtpRequestDto.otp(), validateOtpRequestDto.requestId());
-    return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+    return new ResponseEntity<>(response, HttpStatus.FOUND);
   }
 
- /* @Operation(summary = "Login using OTP")
+  @Operation(summary = "Regsiter user")
   @ApiResponse(responseCode = "200")
   @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
   @ApiResponse(responseCode = "409", content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
   @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
-  @PostMapping("/login")
-  public ResponseEntity<ValidateOtpResponseDto> login(@Valid @RequestBody ValidateOtpRequestDto loginRequest) {
-
-    ValidateOtpResponseDto dto = new ValidateOtpResponseDto("1", "test", "test");
-    return new ResponseEntity<>(dto, HttpStatus.CREATED);
-  }*/
+  @PostMapping("/register")
+  public ResponseEntity<RegisterResponseDto> register(@Valid @RequestBody RegisterRequestDto registerRequestDto) {
+    var response = userService.registerUser(registerRequestDto);
+    return new ResponseEntity<>(response, HttpStatus.FOUND);
+  }
 }

@@ -1,6 +1,5 @@
 package com.leaf.customer.onboarding.onboardingservice.auth.repo;
 
-import java.util.List;
 import java.util.UUID;
 
 import com.leaf.customer.onboarding.onboardingservice.auth.entity.User;

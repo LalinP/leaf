@@ -1,9 +1,10 @@
 package com.leaf.customer.onboarding.onboardingservice.auth.entity;
 
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.UUID;
 
-import com.leaf.customer.onboarding.onboardingservice.enums.RegistrationModeType;
+import com.leaf.customer.onboarding.onboardingservice.enums.Roles;
 import com.leaf.customer.onboarding.onboardingservice.enums.Status;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,7 +15,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,30 +23,32 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "auth_otp", schema = "leaf")
-public class AuthOtp {
+@Table(name = "leaf_user", schema = "leaf")
+public class LeafUser implements Serializable {
+
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
-  private UUID id;
-  private String requestId;
-  private UUID userAccountId;
+  private UUID userId;
   private String countryCode;
-  private String registrationMode; //Mobile or email value
+  private String mobileNumber;
+  private String passcode;
   private String deviceId;
-  private String deviceName;
   @Enumerated(EnumType.STRING)
-  private RegistrationModeType registrationModeType; // MOBILE/EMAIL
-  private int attemptCount;
-  private String otp;
+  private Status userStatus;
   @Enumerated(EnumType.STRING)
-  private Status otpStatus;
+  private Roles role;
   @Column(name = "created_date")
   private Instant createdDate;
   @Column(name = "updated_date")
   private Instant updatedDate;
-  @Column(name ="last_attempted_date")
-  private Instant lastAttemptedDate;
+
+  public void setId(UUID userId) {
+    this.userId = userId;
+  }
+
+  public UUID getId() {
+    return userId;
+  }
 }

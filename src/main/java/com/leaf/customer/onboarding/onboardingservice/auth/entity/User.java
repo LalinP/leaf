@@ -15,30 +15,32 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
+@Builder
 @Getter
 @Setter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "leaf_user", schema = "leaf")
+@Table(name = "user", schema = "leaf")
 public class User implements Serializable {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
   private UUID userId;
   private String countryCode;
   private String mobileNumber;
   private String passcode;
-  private String deviceId;
+  private String deviceCode;
+  private String deviceName;
   @Enumerated(EnumType.STRING)
   private Status userStatus;
   @Enumerated(EnumType.STRING)
   private Roles role;
+  private String userScope;
   @Column(name = "created_date")
   private Instant createdDate;
   @Column(name = "updated_date")
